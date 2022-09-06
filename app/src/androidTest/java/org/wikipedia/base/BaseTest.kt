@@ -1,4 +1,4 @@
-package org.wikipedia.tests
+package org.wikipedia.base
 
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import org.junit.Rule

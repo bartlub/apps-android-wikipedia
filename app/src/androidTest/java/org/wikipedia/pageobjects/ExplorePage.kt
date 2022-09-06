@@ -1,15 +1,14 @@
 package org.wikipedia.pageobjects
 
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import org.wikipedia.R
+import org.wikipedia.base.BasePage
 
-class ExplorePage {
+class ExplorePage: BasePage() {
 
-    private val searchBar = R.id.search_container
+    private val searchBar = withId(R.id.search_container)
 
     fun clickSearchBar() {
-        onView(withId(searchBar)).perform(click())
+        clickElement(searchBar)
     }
 }

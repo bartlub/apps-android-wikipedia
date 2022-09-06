@@ -1,12 +1,14 @@
 package org.wikipedia.pageobjects
 
-import androidx.test.espresso.web.sugar.Web.onWebView
 import androidx.test.espresso.web.webdriver.DriverAtoms.findElement
 import androidx.test.espresso.web.webdriver.Locator.CLASS_NAME
+import org.wikipedia.base.BasePage
 
-class ItemPage {
+class ItemPage: BasePage() {
 
-    private val itemHeader = "mw-page-title-main"
+    private val itemHeader = findElement(CLASS_NAME, "mw-page-title-main")
 
-    fun getItemHeader() = onWebView().withElement(findElement(CLASS_NAME, itemHeader))
+    fun doesItemHeaderContain(text: String): Boolean {
+        return doesWebElementContainText(itemHeader, text)
+    }
 }

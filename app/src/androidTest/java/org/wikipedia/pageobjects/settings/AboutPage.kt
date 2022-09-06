@@ -1,16 +1,16 @@
 package org.wikipedia.pageobjects.settings
 
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.action.ViewActions.scrollTo
+import android.content.Intent.ACTION_SENDTO
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import org.wikipedia.R
+import org.wikipedia.base.BasePage
 
-class AboutPage {
+class AboutPage: BasePage() {
 
-    private val sendAppFeedbackButton = R.id.send_feedback_text
+    private val sendAppFeedbackButton = withId(R.id.send_feedback_text)
 
-    fun clickSendAppFeedbackButton() {
-        onView(withId(sendAppFeedbackButton)).perform(scrollTo(), click())
+    fun doesSendAppFeedbackButtonTriggerIntent(): Boolean {
+        clickElementInScrollView(sendAppFeedbackButton)
+        return isIntentTriggered(ACTION_SENDTO)
     }
 }

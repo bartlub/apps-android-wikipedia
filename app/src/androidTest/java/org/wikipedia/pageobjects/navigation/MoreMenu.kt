@@ -1,15 +1,14 @@
 package org.wikipedia.pageobjects.navigation
 
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import org.wikipedia.R
+import org.wikipedia.base.BasePage
 
-class MoreMenu {
+class MoreMenu: BasePage() {
 
-    private val settingsButton = R.id.main_drawer_settings_container
+    private val settingsButton = withId(R.id.main_drawer_settings_container)
 
     fun clickSettingsButton() {
-        onView(withId(settingsButton)).perform(click())
+        clickElement(settingsButton)
     }
 }

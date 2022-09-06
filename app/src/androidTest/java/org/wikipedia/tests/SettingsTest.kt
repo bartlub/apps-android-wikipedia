@@ -1,18 +1,18 @@
 package org.wikipedia.tests
 
-import android.content.Intent
-import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
-import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.intent.Intents.intended
-import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
-import androidx.test.espresso.intent.rule.IntentsTestRule
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import android.app.Activity.RESULT_OK
+import android.app.Instrumentation.ActivityResult
+import androidx.test.espresso.intent.Intents
+import androidx.test.espresso.intent.Intents.intending
+import androidx.test.espresso.intent.matcher.IntentMatchers.isInternal
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import org.hamcrest.Matchers.not
+import org.junit.After
+import org.junit.Assert.assertTrue
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.wikipedia.main.MainActivity
+import org.wikipedia.base.BaseTest
 import org.wikipedia.pageobjects.OnboardingPage
 import org.wikipedia.pageobjects.navigation.MoreMenu
 import org.wikipedia.pageobjects.navigation.TabBar
@@ -23,10 +23,6 @@ import org.wikipedia.testsupport.SettingsSupport
 
 @RunWith(AndroidJUnit4::class)
 class SettingsTest: BaseTest() {
-
-    @Rule
-    @JvmField
-    val intentsTestRule = IntentsTestRule(MainActivity::class.java)
 
     private val onboardingPage = OnboardingPage()
     private val tabBar = TabBar()
@@ -39,35 +35,48 @@ class SettingsTest: BaseTest() {
     private val language = "Polski"
 
     @Before
+    fun setUpIntents() {
+        Intents.init()
+        intending(not(isInternal())).respondWith(ActivityResult(RESULT_OK, null))
+    }
+
+    @Before
     fun goToSettings() {
         onboardingPage.clickSkipButton()
         tabBar.clickMoreButton()
         moreMenu.clickSettingsButton()
     }
 
+    @After
+    fun releaseIntents() {
+        Intents.release()
+    }
+
     @Test
     fun shouldBePossibleToAddLanguage() {
         settingsSupport.addLanguage(language)
-        wikipediaLanguagesPage.getLanguageLabel(language).check(matches(isDisplayed()))
+        assertTrue("'$language' language label is not displayed",
+            wikipediaLanguagesPage.isLanguageLabelDisplayed(language))
     }
 
     @Test
     fun shouldBePossibleToRemoveLanguage() {
         settingsSupport.addLanguage(language)
         wikipediaLanguagesPage.removeLanguage(language)
-        wikipediaLanguagesPage.getLanguageLabel(language).check(doesNotExist())
+        assertTrue("'$language' language label exists",
+            wikipediaLanguagesPage.doesLanguageLabelNotExist(language))
     }
 
     @Test
     fun shouldExitAppOnRequestToSendAppFeedback() {
         settingsPage.clickAboutWikipediaAppButton()
-        aboutPage.clickSendAppFeedbackButton()
-        intended(hasAction(Intent.ACTION_SENDTO))
+        assertTrue("Intent has not been triggered",
+            aboutPage.doesSendAppFeedbackButtonTriggerIntent())
     }
 
     @Test
     fun shouldExitAppOnRequestToReadTermsOfUse() {
-        settingsPage.clickTermsOfUseButton()
-        intended(hasAction(Intent.ACTION_VIEW))
+        assertTrue("Intent has not been triggered",
+            settingsPage.doesTermsOfUseButtonTriggerIntent())
     }
 }

@@ -1,31 +1,41 @@
 package org.wikipedia.pageobjects.settings
 
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.click
+import android.view.View
 import androidx.test.espresso.matcher.ViewMatchers.*
+import org.hamcrest.Matcher
 import org.hamcrest.Matchers.allOf
 import org.wikipedia.R
+import org.wikipedia.base.BasePage
 
-class WikipediaLanguagesPage {
+class WikipediaLanguagesPage: BasePage() {
 
-    private val addLanguageButton = "ADD LANGUAGE"
-    private val itemTitle = R.id.wiki_language_title
-    private val moreMenuButton = "More options"
-    private val removeLanguageButton = "Remove language"
-    private val deleteButton = R.id.menu_delete_selected
-    private val okButton = "OK"
-
-    fun getLanguageLabel(language: String) = onView(allOf(withId(itemTitle), withText(language)))
+    private val itemTitleId = R.id.wiki_language_title
+    private val addLanguageButton = allOf(withId(itemTitleId), withText("ADD LANGUAGE"))
+    private val moreMenuButton = withContentDescription("More options")
+    private val removeLanguageButton = withText("Remove language")
+    private val deleteButton = withId(R.id.menu_delete_selected)
+    private val okButton = withText("OK")
+    private fun languageLabel(language: String): Matcher<View> {
+        return allOf(withId(itemTitleId), withText(language))
+    }
 
     fun clickAddLanguageButton() {
-        onView(allOf(withId(itemTitle), withText(addLanguageButton))).perform(click())
+        clickElement(addLanguageButton)
     }
 
     fun removeLanguage(language: String) {
-        onView(withContentDescription(moreMenuButton)).perform(click())
-        onView(withText(removeLanguageButton)).perform(click())
-        getLanguageLabel(language).perform(click())
-        onView(withId(deleteButton)).perform(click())
-        onView(withText(okButton)).perform(click())
+        clickElement(moreMenuButton)
+        clickElement(removeLanguageButton)
+        clickElement(languageLabel(language))
+        clickElement(deleteButton)
+        clickElement(okButton)
+    }
+
+    fun isLanguageLabelDisplayed(language: String): Boolean {
+        return isDisplayed(languageLabel(language))
+    }
+
+    fun doesLanguageLabelNotExist(language: String): Boolean {
+        return doesNotExist(languageLabel(language))
     }
 }

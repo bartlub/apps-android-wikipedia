@@ -1,31 +1,28 @@
 package org.wikipedia.pageobjects.settings
 
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
+import android.content.Intent.ACTION_VIEW
 import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import org.wikipedia.R
+import org.wikipedia.base.BasePage
 
-class SettingsPage {
+class SettingsPage: BasePage() {
 
-    private val itemsList = R.id.recycler_view
-    private val wikipediaLanguagesButtonPosition = 1
-    private val aboutWikipediaAppButtonPosition = 16
-    private val termsOfUseButtonPosition = 19
+    private val itemsList = withId(R.id.recycler_view)
+    private val wikipediaLanguagesButton = withText("Wikipedia languages")
+    private val aboutWikipediaAppButton = withText("About the Wikipedia app")
+    private val termsOfUseButton = withText("Terms of use")
 
     fun clickWikipediaLanguagesButton() {
-        onView(withId(itemsList))
-            .perform(actionOnItemAtPosition<ViewHolder>(wikipediaLanguagesButtonPosition, click()))
+        clickDescendantElementInRecyclerView(itemsList, wikipediaLanguagesButton)
     }
 
     fun clickAboutWikipediaAppButton() {
-        onView(withId(itemsList))
-            .perform(actionOnItemAtPosition<ViewHolder>(aboutWikipediaAppButtonPosition, click()))
+        clickDescendantElementInRecyclerView(itemsList, aboutWikipediaAppButton)
     }
 
-    fun clickTermsOfUseButton() {
-        onView(withId(itemsList))
-            .perform(actionOnItemAtPosition<ViewHolder>(termsOfUseButtonPosition, click()))
+    fun doesTermsOfUseButtonTriggerIntent(): Boolean {
+        clickDescendantElementInRecyclerView(itemsList, termsOfUseButton)
+        return isIntentTriggered(ACTION_VIEW)
     }
 }

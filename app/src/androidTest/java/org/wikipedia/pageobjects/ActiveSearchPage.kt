@@ -1,43 +1,52 @@
 package org.wikipedia.pageobjects
 
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.*
-import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
-import androidx.test.espresso.matcher.ViewMatchers.*
+import android.view.View
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withText
+import org.hamcrest.Matcher
 import org.hamcrest.Matchers.allOf
 import org.wikipedia.R
 import org.wikipedia.TestUtil
+import org.wikipedia.base.BasePage
 
-class ActiveSearchPage {
+class ActiveSearchPage: BasePage() {
 
-    private val searchTextField = R.id.search_src_text
-    private val recentSearchesList = R.id.recent_searches_recycler
-    private val itemTitle = R.id.page_list_item_title
-    private val deleteHistoryButton = R.id.recent_searches_delete_button
-    private val yesButton = "YES"
+    private val searchTextField = withId(R.id.search_src_text)
+    private val searchHistoryList = withId(R.id.recent_searches_recycler)
+    private val deleteHistoryButton = withId(R.id.recent_searches_delete_button)
+    private val yesButton = withText("YES")
+    private val itemTitleId = R.id.page_list_item_title
+    private fun itemTitle(itemName: String): Matcher<View> {
+        return allOf(withId(itemTitleId), withText(itemName))
+    }
+    private fun searchHistoryItemTitle(itemName: String): Matcher<View> {
+        return withText(itemName)
+    }
 
-    fun getSearchTextField() = onView(withId(searchTextField))
-
-    fun getDeleteHistoryButton() = onView(withId(deleteHistoryButton))
-
-    fun searchAndSelectItem(text: String) {
-        getSearchTextField().perform(typeText(text))
-        TestUtil.waitForView(itemTitle, 3)
-        onView(allOf(withId(itemTitle), withText(text))).perform(click())
+    fun searchAndSelectItem(itemName: String) {
+        enterText(searchTextField, itemName)
+        TestUtil.waitForView(itemTitleId, 3)
+        clickElement(itemTitle(itemName))
     }
 
     fun clearSearchTextField() {
-        getSearchTextField().perform(clearText())
+        clearText(searchTextField)
     }
 
-    fun selectItemFromSearchHistory(itemNumber: Int) {
-        onView(withId(recentSearchesList))
-            .perform(actionOnItemAtPosition<ViewHolder>(itemNumber - 1, click()))
+    fun selectItemFromSearchHistory(itemName: String) {
+        clickElementInRecyclerView(searchHistoryList, searchHistoryItemTitle(itemName))
     }
 
     fun deleteSearchHistory() {
-        getDeleteHistoryButton().perform(click())
-        onView(withText(yesButton)).perform(click())
+        clickElement(deleteHistoryButton)
+        clickElement(yesButton)
+    }
+
+    fun doesSearchTextFieldContain(text: String): Boolean {
+        return doesElementContainText(searchTextField, text)
+    }
+
+    fun isDeleteHistoryButtonNotDisplayed(): Boolean {
+        return isNotDisplayed(deleteHistoryButton)
     }
 }

@@ -2,17 +2,12 @@ package org.wikipedia.tests
 
 import androidx.test.espresso.Espresso.closeSoftKeyboard
 import androidx.test.espresso.Espresso.pressBack
-import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withText
-import androidx.test.espresso.web.assertion.WebViewAssertions.webMatches
-import androidx.test.espresso.web.webdriver.DriverAtoms.getText
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import org.hamcrest.Matchers.containsString
-import org.hamcrest.Matchers.not
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.wikipedia.base.BaseTest
 import org.wikipedia.pageobjects.ActiveSearchPage
 import org.wikipedia.pageobjects.ItemPage
 import org.wikipedia.pageobjects.OnboardingPage
@@ -40,7 +35,8 @@ class SearchTest: BaseTest() {
     @Test
     fun shouldBePossibleToSearchFromExploreScreen() {
         searchSupport.searchFromExploreScreen(searchPhrase)
-        itemPage.getItemHeader().check(webMatches(getText(), containsString(searchPhrase)))
+        assertTrue("Item header does not contain '$searchPhrase'",
+            itemPage.doesItemHeaderContain(searchPhrase))
     }
 
     @Test
@@ -48,7 +44,8 @@ class SearchTest: BaseTest() {
         tabBar.clickSearchButton()
         searchPage.clickSearchBar()
         activeSearchPage.searchAndSelectItem(searchPhrase)
-        itemPage.getItemHeader().check(webMatches(getText(), containsString(searchPhrase)))
+        assertTrue("Item header does not contain '$searchPhrase'",
+            itemPage.doesItemHeaderContain(searchPhrase))
     }
 
     @Test
@@ -56,8 +53,9 @@ class SearchTest: BaseTest() {
         searchSupport.searchFromExploreScreen(searchPhrase)
         pressBack()
         activeSearchPage.clearSearchTextField()
-        activeSearchPage.selectItemFromSearchHistory(1)
-        activeSearchPage.getSearchTextField().check(matches(withText(searchPhrase)))
+        activeSearchPage.selectItemFromSearchHistory(searchPhrase)
+        assertTrue("Search text field does not contain '$searchPhrase'",
+            activeSearchPage.doesSearchTextFieldContain(searchPhrase))
     }
 
     @Test
@@ -66,7 +64,8 @@ class SearchTest: BaseTest() {
         pressBack()
         activeSearchPage.clearSearchTextField()
         activeSearchPage.deleteSearchHistory()
-        activeSearchPage.getDeleteHistoryButton().check(matches(not(isDisplayed())))
+        assertTrue("Delete history button is displayed",
+            activeSearchPage.isDeleteHistoryButtonNotDisplayed())
     }
 
     @Test
@@ -77,7 +76,8 @@ class SearchTest: BaseTest() {
         repeat(2) { pressBack() }
         tabBar.clickSearchButton()
         searchPage.selectItemFromBrowsingHistory(searchPhrase)
-        itemPage.getItemHeader().check(webMatches(getText(), containsString(searchPhrase)))
+        assertTrue("Item header does not contain '$searchPhrase'",
+            itemPage.doesItemHeaderContain(searchPhrase))
     }
 
     @Test
@@ -88,6 +88,7 @@ class SearchTest: BaseTest() {
         repeat(2) { pressBack() }
         tabBar.clickSearchButton()
         searchPage.deleteBrowsingHistory()
-        searchPage.getDeleteHistoryButton().check(matches(not(isDisplayed())))
+        assertTrue("Delete history button is displayed",
+            searchPage.isDeleteHistoryButtonNotDisplayed())
     }
 }

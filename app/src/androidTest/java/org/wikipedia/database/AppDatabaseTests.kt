@@ -65,21 +65,22 @@ class AppDatabaseTests {
         assertThat(results.size, equalTo(0))
     }
 
-    @Test
-    fun testTalkPageSeen() {
-        talkPageSeenDao.insertTalkPageSeen(TalkPageSeen("328b389f2063da236be9d363b272eb0fa6e065816607099c7db8c09e1c919617"))
-        talkPageSeenDao.insertTalkPageSeen(TalkPageSeen("5fbbb2d46ead3355750e90032feb34051a552a6f1c76cf1b4072d8d158af9de7"))
-
-        assertThat(talkPageSeenDao.getTalkPageSeen("328b389f2063da236be9d363b272eb0fa6e065816607099c7db8c09e1c919617"), notNullValue())
-        assertThat(talkPageSeenDao.getTalkPageSeen("foo"), nullValue())
-
-        var allSeen = talkPageSeenDao.getAll()
-        assertThat(allSeen.size, equalTo(2))
-
-        talkPageSeenDao.deleteAll().blockingSubscribe()
-        allSeen = talkPageSeenDao.getAll()
-        assertThat(allSeen.size, equalTo(0))
-    }
+    // Commented out temporarily:
+//    @Test
+//    fun testTalkPageSeen() {
+//        talkPageSeenDao.insertTalkPageSeen(TalkPageSeen("328b389f2063da236be9d363b272eb0fa6e065816607099c7db8c09e1c919617"))
+//        talkPageSeenDao.insertTalkPageSeen(TalkPageSeen("5fbbb2d46ead3355750e90032feb34051a552a6f1c76cf1b4072d8d158af9de7"))
+//
+//        assertThat(talkPageSeenDao.getTalkPageSeen("328b389f2063da236be9d363b272eb0fa6e065816607099c7db8c09e1c919617"), notNullValue())
+//        assertThat(talkPageSeenDao.getTalkPageSeen("foo"), nullValue())
+//
+//        var allSeen = talkPageSeenDao.getAll()
+//        assertThat(allSeen.size, equalTo(2))
+//
+//        talkPageSeenDao.deleteAll().blockingSubscribe()
+//        allSeen = talkPageSeenDao.getAll()
+//        assertThat(allSeen.size, equalTo(0))
+//    }
 
     @Test
     fun testNotification() = runBlocking {

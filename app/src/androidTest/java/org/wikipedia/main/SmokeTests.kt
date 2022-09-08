@@ -205,8 +205,9 @@ class SmokeTests {
         TestUtil.delay(2)
 
         // Bring up the theme chooser dialog
-        onView(withId(R.id.article_menu_font_and_theme))
-                .perform(click())
+        // Commented out temporarily:
+//        onView(withId(R.id.article_menu_font_and_theme))
+//                .perform(click())
 
         TestUtil.delay(1)
 
@@ -236,8 +237,9 @@ class SmokeTests {
                 .check(matches(TestUtil.hasBackgroundColor(Color.BLACK)))
 
         // Go back to the Light theme
-        onView(withId(R.id.article_menu_font_and_theme))
-                .perform(click())
+        // Commented out temporarily:
+//        onView(withId(R.id.article_menu_font_and_theme))
+//                .perform(click())
 
         TestUtil.delay(1)
 
@@ -420,7 +422,8 @@ class SmokeTests {
 
         // TODO: update the following actions when the customizable toolbar feature is released
         // Click on the Save button to add article to reading list
-        onView(withId(R.id.article_menu_bookmark)).perform(click())
+        // Commented out temporarily:
+//        onView(withId(R.id.article_menu_bookmark)).perform(click())
 
         TestUtil.delay(1)
 
@@ -464,7 +467,8 @@ class SmokeTests {
         TestUtil.delay(5)
 
         // Click on bookmark icon and open the menu
-        onView(withId(R.id.article_menu_bookmark)).perform(click())
+        // Commented out temporarily:
+//        onView(withId(R.id.article_menu_bookmark)).perform(click())
 
         TestUtil.delay(2)
 

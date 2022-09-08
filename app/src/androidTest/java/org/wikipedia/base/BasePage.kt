@@ -27,36 +27,33 @@ import org.hamcrest.Matchers.not
 
 abstract class BasePage {
 
-    fun getElement(element: Matcher<View>): ViewInteraction {
-        return onView(element)
-    }
+    fun getElement(element: Matcher<View>): ViewInteraction = onView(element)
 
-    fun getWebElement(webElement: Atom<ElementReference>): WebInteraction<Void> {
-        return onWebView().withElement(webElement)
-    }
+    fun getWebElement(webElement: Atom<ElementReference>): WebInteraction<Void> =
+        onWebView().withElement(webElement)
 
     fun clickElement(element: Matcher<View>) {
-        onView(element).perform(click())
+        getElement(element).perform(click())
     }
 
     fun clickElementInScrollView(element: Matcher<View>) {
-        onView(element).perform(scrollTo(), click())
+        getElement(element).perform(scrollTo(), click())
     }
 
     fun clickElementInRecyclerView(recyclerView: Matcher<View>, element: Matcher<View>) {
-        onView(recyclerView).perform(actionOnItem<ViewHolder>(element, click()))
+        getElement(recyclerView).perform(actionOnItem<ViewHolder>(element, click()))
     }
 
     fun clickDescendantElementInRecyclerView(recyclerView: Matcher<View>, element: Matcher<View>) {
-        onView(recyclerView).perform(actionOnItem<ViewHolder>(hasDescendant(element), click()))
+        getElement(recyclerView).perform(actionOnItem<ViewHolder>(hasDescendant(element), click()))
     }
 
     fun enterText(element: Matcher<View>, text: String) {
-        onView(element).perform(typeText(text))
+        getElement(element).perform(typeText(text))
     }
 
     fun clearText(element: Matcher<View>) {
-        onView(element).perform(clearText())
+        getElement(element).perform(clearText())
     }
 
     fun doesElementContainText(element: Matcher<View>, text: String): Boolean {

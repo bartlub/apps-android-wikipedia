@@ -13,9 +13,8 @@ class AddLanguagePage: BasePage() {
     private val searchLanguageButton = withId(R.id.menu_search_language)
     private val searchTextField = withId(R.id.search_src_text)
     private val languagesList = withId(R.id.languages_list_recycler)
-    private fun languageLabel(language: String): Matcher<View> {
-        return allOf(withId(R.id.localized_language_name), withText(language))
-    }
+    private fun languageLabel(language: String): Matcher<View> =
+        allOf(withId(R.id.localized_language_name), withText(language))
 
     fun searchAndSelectLanguage(language: String) {
         clickElement(searchLanguageButton)

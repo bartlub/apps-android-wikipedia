@@ -1,5 +1,7 @@
 package org.wikipedia
 
+import android.app.Activity.RESULT_OK
+import android.app.Instrumentation.ActivityResult
 import android.graphics.drawable.ColorDrawable
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +11,8 @@ import androidx.test.espresso.PerformException
 import androidx.test.espresso.UiController
 import androidx.test.espresso.ViewAction
 import androidx.test.espresso.action.*
+import androidx.test.espresso.intent.Intents
+import androidx.test.espresso.intent.matcher.IntentMatchers.isInternal
 import androidx.test.espresso.matcher.ViewMatchers.isRoot
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.util.HumanReadables
@@ -18,6 +22,7 @@ import androidx.test.uiautomator.By
 import androidx.test.uiautomator.UiDevice
 import org.hamcrest.Description
 import org.hamcrest.Matcher
+import org.hamcrest.Matchers.not
 import org.hamcrest.TypeSafeMatcher
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeoutException
@@ -201,5 +206,17 @@ object TestUtil {
 
     fun waitForView(viewId: Int, sec: Long) {
         onView(isRoot()).perform(wait(viewId, TimeUnit.SECONDS.toMillis(sec)))
+    }
+
+    fun beginRecordingIntents() {
+        Intents.init()
+    }
+
+    fun clearIntentsState() {
+        Intents.release()
+    }
+
+    fun stubAllExternalIntents() {
+        Intents.intending(not(isInternal())).respondWith(ActivityResult(RESULT_OK, null))
     }
 }

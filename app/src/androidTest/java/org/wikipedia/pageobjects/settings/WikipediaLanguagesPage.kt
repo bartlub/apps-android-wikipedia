@@ -15,9 +15,8 @@ class WikipediaLanguagesPage: BasePage() {
     private val removeLanguageButton = withText("Remove language")
     private val deleteButton = withId(R.id.menu_delete_selected)
     private val okButton = withText("OK")
-    private fun languageLabel(language: String): Matcher<View> {
-        return allOf(withId(itemTitleId), withText(language))
-    }
+    private fun languageLabel(language: String): Matcher<View> =
+        allOf(withId(itemTitleId), withText(language))
 
     fun clickAddLanguageButton() {
         clickElement(addLanguageButton)
@@ -31,11 +30,8 @@ class WikipediaLanguagesPage: BasePage() {
         clickElement(okButton)
     }
 
-    fun isLanguageLabelDisplayed(language: String): Boolean {
-        return isDisplayed(languageLabel(language))
-    }
+    fun isLanguageLabelDisplayed(language: String): Boolean = isDisplayed(languageLabel(language))
 
-    fun doesLanguageLabelNotExist(language: String): Boolean {
-        return doesNotExist(languageLabel(language))
-    }
+    fun doesLanguageLabelNotExist(language: String): Boolean =
+        doesNotExist(languageLabel(language))
 }

@@ -16,12 +16,9 @@ class ActiveSearchPage: BasePage() {
     private val deleteHistoryButton = withId(R.id.recent_searches_delete_button)
     private val yesButton = withText("YES")
     private val itemTitleId = R.id.page_list_item_title
-    private fun itemTitle(itemName: String): Matcher<View> {
-        return allOf(withId(itemTitleId), withText(itemName))
-    }
-    private fun searchHistoryItemTitle(itemName: String): Matcher<View> {
-        return withText(itemName)
-    }
+    private fun itemTitle(itemName: String): Matcher<View> =
+        allOf(withId(itemTitleId), withText(itemName))
+    private fun searchHistoryItemTitle(itemName: String): Matcher<View> = withText(itemName)
 
     fun searchAndSelectItem(itemName: String) {
         enterText(searchTextField, itemName)
@@ -42,11 +39,8 @@ class ActiveSearchPage: BasePage() {
         clickElement(yesButton)
     }
 
-    fun doesSearchTextFieldContain(text: String): Boolean {
-        return doesElementContainText(searchTextField, text)
-    }
+    fun doesSearchTextFieldContain(text: String): Boolean =
+        doesElementContainText(searchTextField, text)
 
-    fun isDeleteHistoryButtonNotDisplayed(): Boolean {
-        return isNotDisplayed(deleteHistoryButton)
-    }
+    fun isDeleteHistoryButtonNotDisplayed(): Boolean = isNotDisplayed(deleteHistoryButton)
 }

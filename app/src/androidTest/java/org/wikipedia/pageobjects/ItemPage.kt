@@ -8,7 +8,5 @@ class ItemPage: BasePage() {
 
     private val itemHeader = findElement(CLASS_NAME, "mw-page-title-main")
 
-    fun doesItemHeaderContain(text: String): Boolean {
-        return doesWebElementContainText(itemHeader, text)
-    }
+    fun doesItemHeaderContain(text: String): Boolean = doesWebElementContainText(itemHeader, text)
 }

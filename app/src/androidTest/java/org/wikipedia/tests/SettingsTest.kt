@@ -1,17 +1,12 @@
 package org.wikipedia.tests
 
-import android.app.Activity.RESULT_OK
-import android.app.Instrumentation.ActivityResult
-import androidx.test.espresso.intent.Intents
-import androidx.test.espresso.intent.Intents.intending
-import androidx.test.espresso.intent.matcher.IntentMatchers.isInternal
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import org.hamcrest.Matchers.not
 import org.junit.After
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.wikipedia.TestUtil
 import org.wikipedia.base.BaseTest
 import org.wikipedia.pageobjects.OnboardingPage
 import org.wikipedia.pageobjects.navigation.MoreMenu
@@ -36,8 +31,8 @@ class SettingsTest: BaseTest() {
 
     @Before
     fun setUpIntents() {
-        Intents.init()
-        intending(not(isInternal())).respondWith(ActivityResult(RESULT_OK, null))
+        TestUtil.beginRecordingIntents()
+        TestUtil.stubAllExternalIntents()
     }
 
     @Before
@@ -48,8 +43,8 @@ class SettingsTest: BaseTest() {
     }
 
     @After
-    fun releaseIntents() {
-        Intents.release()
+    fun clearIntents() {
+        TestUtil.clearIntentsState()
     }
 
     @Test

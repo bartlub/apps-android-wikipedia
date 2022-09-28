@@ -1,6 +1,5 @@
 package org.wikipedia.tests
 
-import androidx.test.espresso.Espresso.closeSoftKeyboard
 import androidx.test.espresso.Espresso.pressBack
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.junit.Assert.assertTrue
@@ -9,7 +8,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.wikipedia.base.BaseTest
 import org.wikipedia.pageobjects.ActiveSearchPage
-import org.wikipedia.pageobjects.ItemPage
+import org.wikipedia.pageobjects.ArticlePage
 import org.wikipedia.pageobjects.OnboardingPage
 import org.wikipedia.pageobjects.SearchPage
 import org.wikipedia.pageobjects.navigation.TabBar
@@ -22,7 +21,7 @@ class SearchTest: BaseTest() {
     private val activeSearchPage = ActiveSearchPage()
     private val tabBar = TabBar()
     private val searchPage = SearchPage()
-    private val itemPage = ItemPage()
+    private val articlePage = ArticlePage()
     private val searchSupport = SearchSupport()
 
     private val searchPhrase = "Dog"
@@ -35,8 +34,8 @@ class SearchTest: BaseTest() {
     @Test
     fun shouldBePossibleToSearchFromExploreScreen() {
         searchSupport.searchFromExploreScreen(searchPhrase)
-        assertTrue("Item header does not contain '$searchPhrase'",
-            itemPage.doesItemHeaderContain(searchPhrase))
+        assertTrue("Article header does not contain '$searchPhrase'",
+            articlePage.doesArticleHeaderContain(searchPhrase))
     }
 
     @Test
@@ -44,8 +43,8 @@ class SearchTest: BaseTest() {
         tabBar.clickSearchButton()
         searchPage.clickSearchBar()
         activeSearchPage.searchAndSelectItem(searchPhrase)
-        assertTrue("Item header does not contain '$searchPhrase'",
-            itemPage.doesItemHeaderContain(searchPhrase))
+        assertTrue("Article header does not contain '$searchPhrase'",
+            articlePage.doesArticleHeaderContain(searchPhrase))
     }
 
     @Test
@@ -71,21 +70,17 @@ class SearchTest: BaseTest() {
     @Test
     fun shouldBePossibleToSelectItemFromBrowsingHistory() {
         searchSupport.searchFromExploreScreen(searchPhrase)
-        pressBack()
-        closeSoftKeyboard()
-        repeat(2) { pressBack() }
+        repeat(3) { pressBack() }
         tabBar.clickSearchButton()
         searchPage.selectItemFromBrowsingHistory(searchPhrase)
-        assertTrue("Item header does not contain '$searchPhrase'",
-            itemPage.doesItemHeaderContain(searchPhrase))
+        assertTrue("Article header does not contain '$searchPhrase'",
+            articlePage.doesArticleHeaderContain(searchPhrase))
     }
 
     @Test
     fun shouldBePossibleToDeleteBrowsingHistory() {
         searchSupport.searchFromExploreScreen(searchPhrase)
-        pressBack()
-        closeSoftKeyboard()
-        repeat(2) { pressBack() }
+        repeat(3) { pressBack() }
         tabBar.clickSearchButton()
         searchPage.deleteBrowsingHistory()
         assertTrue("Delete history button is displayed",

@@ -208,6 +208,14 @@ object TestUtil {
         onView(isRoot()).perform(wait(viewId, TimeUnit.SECONDS.toMillis(sec)))
     }
 
+    fun waitForSnackbar(sec: Long) {
+        waitForView(R.id.snackbar_text, sec)
+    }
+
+    fun waitForTextFieldError(sec: Long) {
+        waitForView(R.id.textinput_error, sec)
+    }
+
     fun beginRecordingIntents() {
         Intents.init()
     }

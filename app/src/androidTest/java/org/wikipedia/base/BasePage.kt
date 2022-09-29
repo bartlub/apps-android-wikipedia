@@ -11,9 +11,7 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItem
 import androidx.test.espresso.intent.Intents.intended
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
-import androidx.test.espresso.matcher.ViewMatchers.withText
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.hasDescendant
+import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.espresso.web.assertion.WebViewAssertions.webMatches
 import androidx.test.espresso.web.model.Atom
 import androidx.test.espresso.web.model.ElementReference
@@ -95,6 +93,15 @@ abstract class BasePage {
     fun doesNotExist(element: Matcher<View>): Boolean {
         return try {
             getElement(element).check(doesNotExist())
+            true
+        } catch (e: AssertionFailedError) {
+            false
+        }
+    }
+
+    fun isEnabled(element: Matcher<View>): Boolean {
+        return try {
+            getElement(element).check(matches(isEnabled()))
             true
         } catch (e: AssertionFailedError) {
             false
